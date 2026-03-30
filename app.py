@@ -27,29 +27,25 @@ def predict():
         ph = float(request.form["ph"])
         rainfall = float(request.form["rainfall"])
 
-        # Convert to array
         features = np.array([[N, P, K, temp, humidity, ph, rainfall]])
 
-        # Apply SAME scaling as training
         features_scaled = scaler.transform(features)
 
         probs = model.predict_proba(features_scaled)
 
-        
         top3_idx = np.argsort(probs[0])[-3:][::-1]
-        
         top3_crops = le.inverse_transform(top3_idx)
         top3_probs = probs[0][top3_idx]
 
         reasons = generate_explanation(N, P, K, temp, humidity, ph, rainfall)
-        
+
         return render_template(
             "index.html",
             crops=top3_crops,
             probs=top3_probs,
             reasons=reasons
         )
-    
+
     except Exception as e:
         return render_template(
             "index.html",
