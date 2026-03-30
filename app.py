@@ -9,16 +9,15 @@ model = pickle.load(open("model.pkl", "rb"))
 scaler = pickle.load(open("scaler.pkl", "rb"))
 le = pickle.load(open("label_encoder.pkl", "rb"))
 
-#Home Route (UI Page)
+
 @app.route("/")
 def home():
     return render_template("index.html", crops=None, reasons=None)
 
-#Prediction Route
+
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
-        # Get user input
         N = float(request.form["N"])
         P = float(request.form["P"])
         K = float(request.form["K"])
@@ -54,6 +53,7 @@ def predict():
             reasons=[str(e)]
         )
 
+
 def generate_explanation(N, P, K, temp, humidity, ph, rainfall):
     reasons = []
 
@@ -70,13 +70,14 @@ def generate_explanation(N, P, K, temp, humidity, ph, rainfall):
     if humidity > 70:
         reasons.append("high humidity")
 
-    if ph >= 6 and ph <= 7:
+    if 6 <= ph <= 7:
         reasons.append("optimal pH level")
 
     if N > 80:
         reasons.append("high nitrogen content")
 
     return reasons
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
