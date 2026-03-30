@@ -50,13 +50,13 @@ def predict():
             reasons=reasons
         )
     
-        except Exception as e:
-            return render_template(
-                "index.html",
-                crops=None,
-                probs=None,
-                reasons=[str(e)]
-            )
+    except Exception as e:
+        return render_template(
+            "index.html",
+            crops=None,
+            probs=None,
+            reasons=[str(e)]
+        )
 
 def generate_explanation(N, P, K, temp, humidity, ph, rainfall):
     reasons = []
