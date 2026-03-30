@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Recommendation System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: darkgreen;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .best {
+            color: green;
+            font-weight: bold;
+        }
+
+        .second {
+            color: orange;
+        }
+
+        .third {
+            color: gray;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Crop Recommendation</h1>
+
+    <form action="/predict" method="post">
+
+        <input name="N" placeholder="Nitrogen" required>
+        <input name="P" placeholder="Phosphorus" required>
+        <input name="K" placeholder="Potassium" required>
+        <input name="temperature" placeholder="Temperature (°C)" required>
+        <input name="humidity" placeholder="Humidity (%)" required>
+        <input name="ph" placeholder="pH" required>
+        <input name="rainfall" placeholder="Rainfall (mm)" required>
+
+        <button type="submit">Predict</button>
+
+    </form>
+
+    <div class="result">
+
+        {% if crops is not none %}
+
+            <h2>Top Recommendations</h2>
+
+            <ol>
+                <li class="best">
+                    {{ crops[0] }} - {{ (probs[0]*100)|round(2) }}%
+                </li>
+                <li class="second">
+                    {{ crops[1] }} - {{ (probs[1]*100)|round(2) }}%
+                </li>
+                <li class="third">
+                    {{ crops[2] }} - {{ (probs[2]*100)|round(2) }}%
+                </li>
+            </ol>
+
+        {% endif %}
+
+        {% if reasons %}
+
+            <h3>Why this recommendation?</h3>
+
+            <ul>
+                {% for r in reasons %}
+                    <li>{{ r }}</li>
+                {% endfor %}
+            </ul>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
